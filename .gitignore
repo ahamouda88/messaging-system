@@ -1,0 +1,14 @@
+# --Java-- #
+.class
+
+# --Eclipse-- #
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+.classpath
+.settings/
