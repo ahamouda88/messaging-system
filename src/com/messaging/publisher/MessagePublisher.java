@@ -8,6 +8,7 @@ import com.messaging.util.ParametersUtil;
 
 public class MessagePublisher<T> implements IPublisher<T>{
 
+	// Used a Set to remove duplicates.
 	private Set<ISubscriber<T>> subscribers;
 	private boolean changed;
 	
