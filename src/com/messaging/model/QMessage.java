@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class QMessage {
 
-	private long id;
-	private String message;
-	private Date datePublished;
+	private final long id;
+	private final String message;
+	private final Date datePublished;
 	
 	public QMessage(long id, String message, Date datePublished) {
 		this.id = id;
@@ -18,24 +18,12 @@ public class QMessage {
 		return id;
 	}
 	
-	public void setId(long id) {
-		this.id = id;
-	}
-	
 	public String getMessage() {
 		return message;
 	}
 	
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
 	public Date getDatePublished() {
 		return datePublished;
-	}
-	
-	public void setDatePublished(Date datePublished) {
-		this.datePublished = datePublished;
 	}
 	
 	@Override

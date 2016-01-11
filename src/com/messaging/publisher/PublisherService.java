@@ -8,12 +8,12 @@ import com.messaging.subscriber.ISubscriber;
 public class PublisherService<T> {
 	
 	// Used to keep track of all subscribers registered and unregistered to the publisher.
-	private Map<Long, ISubscriber<T>> allSubscribers;
+	private final Map<Long, ISubscriber<T>> allSubscribers;
 	// Used to keep track of the last change id of unregistered subscriber.
-	private Map<ISubscriber<T>, Long> subscriberLastChangeId;
+	private final Map<ISubscriber<T>, Long> subscriberLastChangeId;
 	// Used to keep track of all messages.
-	private Map<Long, T> historicalChanges;
-	private IPublisher<T> publisher;
+	private final Map<Long, T> historicalChanges;
+	private final IPublisher<T> publisher;
 	private long nxtSubscriberId;
 	private long nxtChangeId;
 	
@@ -25,7 +25,7 @@ public class PublisherService<T> {
 		
 	}
 
-	public long addSubscriber(ISubscriber<T> subscriber) {
+	public synchronized long addSubscriber(ISubscriber<T> subscriber) {
 		long subscriberId = -1;
 		// Check if subscriber already registered to the publisher.
 		if(!publisher.containSubscriber(subscriber)){
@@ -40,7 +40,7 @@ public class PublisherService<T> {
 		return subscriberId;
 	}
 
-	public void removeSubscriber(ISubscriber<T> subscriber) {		
+	public synchronized void removeSubscriber(ISubscriber<T> subscriber) {		
 		if(publisher.containSubscriber(subscriber)){
 			publisher.removeSubscriber(subscriber);
 			long changeId = nxtChangeId > 0 ? nxtChangeId : 0;
@@ -49,7 +49,7 @@ public class PublisherService<T> {
 		}
 	}
 
-	public boolean reAddSubscriber(long subscriberId) {
+	public synchronized boolean reAddSubscriber(long subscriberId) {
 		boolean check = false;
 		ISubscriber<T> subscriber = allSubscribers.get(subscriberId);
 		
@@ -77,7 +77,7 @@ public class PublisherService<T> {
 		return check;
 	}
 	
-	public void setChange(T change) {
+	public synchronized void setChange(T change) {
 		if(change != null){			
 			publisher.setChange(change);
 			historicalChanges.put(nxtChangeId, change);
@@ -85,7 +85,7 @@ public class PublisherService<T> {
 		}
 	}
 	
-	public void clearHistoricalChanges(){
+	public synchronized void clearHistoricalChanges(){
 		historicalChanges.clear();
 	}
 	
