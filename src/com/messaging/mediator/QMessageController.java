@@ -12,13 +12,13 @@ import com.messaging.util.ParametersUtil;
 
 public class QMessageController {
 	
-	private Map<String, PublisherService<QMessage>> publisherMap;
+	private final Map<String, PublisherService<QMessage>> publisherMap;
 	
 	public QMessageController(){
 		publisherMap = new HashMap<String, PublisherService<QMessage>>();
 	}
 	
-	public long subscribe(ISubscriber<QMessage> subscriber, String publisherName) {
+	public synchronized long subscribe(ISubscriber<QMessage> subscriber, String publisherName) {
 		long subscriberId = -1;
 		ParametersUtil.checkNullParameters(subscriber, publisherName);
 		
@@ -29,7 +29,7 @@ public class QMessageController {
 		return subscriberId;
 	}
 	
-	public void unsubscribe(ISubscriber<QMessage> subscriber, String publisherName){
+	public synchronized void unsubscribe(ISubscriber<QMessage> subscriber, String publisherName){
 		ParametersUtil.checkNullParameters(subscriber, publisherName);
 		
 		PublisherService<QMessage> publisherService = publisherMap.get(publisherName);
@@ -38,7 +38,7 @@ public class QMessageController {
 		}
 	}
 	
-	public boolean resubscribe(long subcriberId, String publisherName){
+	public synchronized boolean resubscribe(long subcriberId, String publisherName){
 		boolean result = false;
 		ParametersUtil.checkNullParameters(subcriberId, publisherName);
 		
@@ -49,7 +49,7 @@ public class QMessageController {
 		return result;
 	}
 	
-	public void postMessage(String message, String publisherName){
+	public synchronized void postMessage(String message, String publisherName){
 		ParametersUtil.checkNullParameters(message, publisherName);
 		
 		PublisherService<QMessage> publisherService = publisherMap.get(publisherName);	
@@ -60,7 +60,7 @@ public class QMessageController {
 		}
 	}
 	
-	public void addPulisher(IPublisher<QMessage> publisher, String publisherName){
+	public synchronized void addPulisher(IPublisher<QMessage> publisher, String publisherName){
 		ParametersUtil.checkNullParameters(publisher, publisherName);
 		
 		PublisherService<QMessage> publisherService = new PublisherService<QMessage>(publisher);
