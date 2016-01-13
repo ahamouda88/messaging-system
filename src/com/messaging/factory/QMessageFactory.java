@@ -15,7 +15,7 @@ public final class QMessageFactory {
 	
 	private QMessageFactory(){}
 	
-	public static QMessage createQMessage(String message){
+	public synchronized static QMessage createQMessage(String message){
 		QMessage newMessage = null;
 		if(message != null){
 			Calendar cal = Calendar.getInstance();
