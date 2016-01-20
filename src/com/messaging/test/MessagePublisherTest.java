@@ -17,14 +17,16 @@ public class MessagePublisherTest {
 	/*
 	 * Global Test Variables.
 	 */
-	private final MessagePublisher<QMessage> publisher = new MessagePublisher<QMessage>();
-	private final ISubscriber<QMessage> subscriberOne = new MessageDisplaySubscriber<QMessage>();
-	private final ISubscriber<QMessage> subscriberTwo = new MessageDisplaySubscriber<QMessage>();
+	private MessagePublisher<QMessage> publisher;
+	private ISubscriber<QMessage> subscriberOne;
+	private ISubscriber<QMessage> subscriberTwo;
 	
 	@Before
 	public void testAddSubscriber(){
-		long expectedNo = 1;
+		publisher = new MessagePublisher<QMessage>();
 		
+		long expectedNo = 1;
+		subscriberOne = new MessageDisplaySubscriber<QMessage>();
 		publisher.addSubscriber(subscriberOne);		
 		Assert.assertEquals(expectedNo, publisher.getNoOfSubscribers());
 		
@@ -32,6 +34,7 @@ public class MessagePublisherTest {
 		Assert.assertEquals(expectedNo, publisher.getNoOfSubscribers());
 		
 		expectedNo = 2;
+		subscriberTwo = new MessageDisplaySubscriber<QMessage>();
 		publisher.addSubscriber(subscriberTwo);
 		Assert.assertEquals(expectedNo, publisher.getNoOfSubscribers());
 	}
